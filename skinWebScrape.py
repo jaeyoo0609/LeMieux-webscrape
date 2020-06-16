@@ -10,7 +10,7 @@ import requests
 import json
 import csv
 
-with open('Columbia25MileRadius.csv', 'w', newline='') as f:
+with open('LasVegas25MileRadius.csv', 'w', newline='') as f:
     thewriter = csv.writer(f)
 
     thewriter.writerow(['Name', 'Location', 'Rating', 'Contact'])
@@ -31,7 +31,7 @@ with open('Columbia25MileRadius.csv', 'w', newline='') as f:
             'limit' : 50,
             'radius' : 40000,
             'offset' : OFFSET,
-            'location' : 'Columbia'
+            'location' : 'Las Vegas'
         }
 
         #Making request to Yelp API
