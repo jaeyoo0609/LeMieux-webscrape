@@ -10,7 +10,7 @@ import requests
 import json
 import csv
 
-with open('LasVegas25MileRadius.csv', 'w', newline='') as f:
+with open('DallasMicro.csv', 'w', newline='') as f:
     thewriter = csv.writer(f)
 
     thewriter.writerow(['Name', 'Location', 'Rating', 'Contact'])
@@ -27,11 +27,11 @@ with open('LasVegas25MileRadius.csv', 'w', newline='') as f:
     while OFFSET < 1000:
         #Define the parameters
         PARAMETERS = {
-            'term' : 'skin care, medical spa',
+            'term' : 'microneedling',
             'limit' : 50,
             'radius' : 40000,
             'offset' : OFFSET,
-            'location' : 'Las Vegas'
+            'location' : 'Dallas'
         }
 
         #Making request to Yelp API
