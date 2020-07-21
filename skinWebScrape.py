@@ -10,77 +10,81 @@ import requests
 import json
 import csv
 
-f = open('cities.json')
-data = json.load(f)
-count = 0
-for city in data:
-    count = count + 1
-    userLocation = city['city'] 
-    print(userLocation)
-    
-    with open(userLocation + 'Dermaplane.csv', 'w', newline='') as f:
-        thewriter = csv.writer(f)
+while True:
+    desState = input('Desired State: ')
 
-        thewriter.writerow(['Name', 'Location', 'Rating', 'Contact'])
+    with open(desState + 'cities.csv') as csvfile:
+        readCSV = csv.reader(csvfile)
 
-        #define business id
-        business_id ='HuaI3akdTuzM1MJXLV3Qbg'
+        for row in readCSV:
+            userLocation = row[0]
+            print(userLocation)
+            
+            with open(userLocation + 'MicroNeedle.csv', 'w', newline='') as f:
+                thewriter = csv.writer(f)
 
-        #define the API key, define the endpoint, and define the header
-        API_KEY = 'Bfj52f3IPqzUJS1bjWTb5aHfTRgFSGDbpZ4a7DuatM9Y0KFGxm4ifUbvHdhzRuhklbZcIx1ZtSWEWaaLuwN3nU2IuhrjIEnhT1I3i2bVQo7_kpF9-VhI-hzjjw_pXnYx'
-        ENDPOINT = 'https://api.yelp.com/v3/businesses/search'
-        #Authenticating oneself to the Yelp API
-        HEADERS = {'Authorization' : 'bearer %s' % API_KEY}
-        OFFSET = 0
+                thewriter.writerow(['Name', 'Location', 'Rating', 'Contact'])
 
-        while OFFSET < 200:
-            #Define the parameters
-            PARAMETERS = {
-                'term' : 'dermaplaning',
-                'limit' : 50,
-                'radius' : 40000,
-                'offset' : OFFSET,
-                'location' : userLocation
-            }
+                #define business id
+                business_id ='HuaI3akdTuzM1MJXLV3Qbg'
 
-            #Making request to Yelp API
-            response = requests.get(url = ENDPOINT, params = PARAMETERS, headers = HEADERS)
+                #define the API key, define the endpoint, and define the header
+                API_KEY = 'Bfj52f3IPqzUJS1bjWTb5aHfTRgFSGDbpZ4a7DuatM9Y0KFGxm4ifUbvHdhzRuhklbZcIx1ZtSWEWaaLuwN3nU2IuhrjIEnhT1I3i2bVQo7_kpF9-VhI-hzjjw_pXnYx'
+                ENDPOINT = 'https://api.yelp.com/v3/businesses/search'
+                #Authenticating oneself to the Yelp API
+                HEADERS = {'Authorization' : 'bearer %s' % API_KEY}
+                OFFSET = 0
 
-            #convert json string to dict
-            business_data = response.json()
+                while OFFSET < 100:
+                    #Define the parameters
+                    PARAMETERS = {
+                        'term' : 'microneedle',
+                        'limit' : 50,
+                        'radius' : 40000,
+                        'offset' : OFFSET,
+                        'location' : userLocation
+                    }
 
-            #print(business_data.keys())
+                    #Making request to Yelp API
+                    response = requests.get(url = ENDPOINT, params = PARAMETERS, headers = HEADERS)
 
-            for biz in business_data['businesses']:
-                rate = biz['rating']
-                if rate < 4:
-                    pass
+                    #convert json string to dict
+                    business_data = response.json()
 
-                else:
-                    location = biz['location']
-                    if location is None:
-                        location = ''
-                    
-                    city = location['city']
-                    if city is None:
-                        city = ''
-                    
-                    address = location['address1']
-                    if address is None:
-                        address = ''
-                    state = location['state']
-                    if state is None:
-                        state = ''
-                    zipcode = location["zip_code"]
-                    if zipcode is None:
-                        zipcode = ''
+                    #print(business_data.keys())
 
-                    thewriter.writerow([biz['name'], address + ', ' + city + ', ' + state + ', ' + zipcode, str(biz['rating']), biz['phone']])
-            OFFSET += 50
-    
-    if count > 100:
+                    for biz in business_data['businesses']:
+                        rate = biz['rating']
+                        if rate < 4:
+                            pass
+
+                        else:
+                            location = biz['location']
+                            if location is None:
+                                location = ''
+                            
+                            city = location['city']
+                            if city is None:
+                                city = ''
+                            
+                            address = location['address1']
+                            if address is None:
+                                address = ''
+                            state = location['state']
+                            if state is None:
+                                state = ''
+                            zipcode = location["zip_code"]
+                            if zipcode is None:
+                                zipcode = ''
+
+                            thewriter.writerow([biz['name'], address + ', ' + city + ', ' + state + ', ' + zipcode, str(biz['rating']), biz['phone']])
+                    OFFSET += 50
+
+    answer = input('Again?(y/n): ')
+    if answer == 'y':
+        continue
+    else:
+        print('Done.')
         break
 
 
-f.close()
-print('Done.')

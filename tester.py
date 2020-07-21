@@ -2,15 +2,24 @@ import requests
 import json
 import csv
 
-with open('testerfile.csv', 'w', newline='') as f:
-    thewriter = csv.writer(f)
-    thewriter.writerow(['city'])
+while True:
+    userInput = input('Desired state: ')
 
-    f = open('cities.json')
-    data = json.load(f)
+    with open(userInput + 'cities.csv', 'w', newline='') as f:
+        thewriter = csv.writer(f)
 
-    for city in data:
-       location = city['city'] 
-       thewriter.writerow([location])
+        f = open('cities.json')
+        data = json.load(f)
 
-    f.close()
+        for city in data:
+            if city['state'] == userInput:
+                thewriter.writerow([city['city']])
+
+        f.close()
+
+        answer = input('Again?(y/n): ')
+        if answer == 'y':
+            continue
+        else:
+            print('Done.')
+            break
