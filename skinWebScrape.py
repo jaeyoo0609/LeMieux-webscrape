@@ -20,7 +20,7 @@ while True:
             userLocation = row[0]
             print(userLocation)
             
-            with open(userLocation + 'MicroNeedle.csv', 'w', newline='') as f:
+            with open(userLocation + 'Dermaplaning.csv', 'w', newline='') as f:
                 thewriter = csv.writer(f)
 
                 thewriter.writerow(['Name', 'Location', 'Rating', 'Contact'])
@@ -35,10 +35,10 @@ while True:
                 HEADERS = {'Authorization' : 'bearer %s' % API_KEY}
                 OFFSET = 0
 
-                while OFFSET < 100:
+                while OFFSET < 50:
                     #Define the parameters
                     PARAMETERS = {
-                        'term' : 'microneedle',
+                        'term' : 'dermaplane',
                         'limit' : 50,
                         'radius' : 40000,
                         'offset' : OFFSET,
